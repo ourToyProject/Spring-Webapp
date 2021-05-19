@@ -12,7 +12,6 @@ import org.springframework.web.servlet.DispatcherServlet;
 import Spring.Webapp.config.MyConfiguration;
 
 public class MyInitializer implements WebApplicationInitializer{
-
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		// TODO Auto-generated method stub
@@ -21,7 +20,7 @@ public class MyInitializer implements WebApplicationInitializer{
 	private void registerDispatcherServlet(ServletContext servletContext) {
 		WebApplicationContext dispatcherContext = createContext(MyConfiguration.class);
 		DispatcherServlet dispatcherServlet = new DispatcherServlet(dispatcherContext);
-		ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", dispatcherServlet);
+		ServletRegistration.Dynamic dispatcher =servletContext.addServlet("dispatcher", dispatcherServlet);
 		dispatcher.setLoadOnStartup(1);
 		dispatcher.addMapping("*.htm");
 	}
