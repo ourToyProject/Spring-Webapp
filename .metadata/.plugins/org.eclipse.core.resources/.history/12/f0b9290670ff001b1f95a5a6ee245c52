@@ -1,0 +1,118 @@
+package Spring.Webapp.model;
+
+public class stockModel {
+
+	private String ISU_SRT_CD;	// 辆格内靛
+	private String ISU_ABBRV;	// 辆格疙
+	private String MKT_NM;		// 矫厘备盒
+	private String SECT_TP_NM;	// 家加何
+	private String TDD_CLSPRC;	//
+	private String FLUC_TP_CD;
+	private String CMPPREVDD_PRC;
+	private String FLUC_RT;
+	private String TDD_OPNPRC;
+	private String TDD_HGPRC;
+	private String TDD_LWPRC;
+	private String ACC_TRDVOL;
+	private String ACC_TRDVAL;
+	private String MKTCAP;
+	private String MKT_ID;
+	private String LIST_SHRS;
+	public String getISU_SRT_CD() {
+		return ISU_SRT_CD;
+	}
+	public void setISU_SRT_CD(String iSU_SRT_CD) {
+		ISU_SRT_CD = iSU_SRT_CD;
+	}
+	public String getISU_ABBRV() {
+		return ISU_ABBRV;
+	}
+	public void setISU_ABBRV(String iSU_ABBRV) {
+		ISU_ABBRV = iSU_ABBRV;
+	}
+	public String getMKT_NM() {
+		return MKT_NM;
+	}
+	public void setMKT_NM(String mKT_NM) {
+		MKT_NM = mKT_NM;
+	}
+	public String getSECT_TP_NM() {
+		return SECT_TP_NM;
+	}
+	public void setSECT_TP_NM(String sECT_TP_NM) {
+		SECT_TP_NM = sECT_TP_NM;
+	}
+	public String getTDD_CLSPRC() {
+		return TDD_CLSPRC;
+	}
+	public void setTDD_CLSPRC(String tDD_CLSPRC) {
+		TDD_CLSPRC = tDD_CLSPRC;
+	}
+	public String getFLUC_TP_CD() {
+		return FLUC_TP_CD;
+	}
+	public void setFLUC_TP_CD(String fLUC_TP_CD) {
+		FLUC_TP_CD = fLUC_TP_CD;
+	}
+	public String getCMPPREVDD_PRC() {
+		return CMPPREVDD_PRC;
+	}
+	public void setCMPPREVDD_PRC(String cMPPREVDD_PRC) {
+		CMPPREVDD_PRC = cMPPREVDD_PRC;
+	}
+	public String getFLUC_RT() {
+		return FLUC_RT;
+	}
+	public void setFLUC_RT(String fLUC_RT) {
+		FLUC_RT = fLUC_RT;
+	}
+	public String getTDD_OPNPRC() {
+		return TDD_OPNPRC;
+	}
+	public void setTDD_OPNPRC(String tDD_OPNPRC) {
+		TDD_OPNPRC = tDD_OPNPRC;
+	}
+	public String getTDD_HGPRC() {
+		return TDD_HGPRC;
+	}
+	public void setTDD_HGPRC(String tDD_HGPRC) {
+		TDD_HGPRC = tDD_HGPRC;
+	}
+	public String getTDD_LWPRC() {
+		return TDD_LWPRC;
+	}
+	public void setTDD_LWPRC(String tDD_LWPRC) {
+		TDD_LWPRC = tDD_LWPRC;
+	}
+	public String getACC_TRDVOL() {
+		return ACC_TRDVOL;
+	}
+	public void setACC_TRDVOL(String aCC_TRDVOL) {
+		ACC_TRDVOL = aCC_TRDVOL;
+	}
+	public String getACC_TRDVAL() {
+		return ACC_TRDVAL;
+	}
+	public void setACC_TRDVAL(String aCC_TRDVAL) {
+		ACC_TRDVAL = aCC_TRDVAL;
+	}
+	public String getMKTCAP() {
+		return MKTCAP;
+	}
+	public void setMKTCAP(String mKTCAP) {
+		MKTCAP = mKTCAP;
+	}
+	public String getMKT_ID() {
+		return MKT_ID;
+	}
+	public void setMKT_ID(String mKT_ID) {
+		MKT_ID = mKT_ID;
+	}
+	public String getLIST_SHRS() {
+		return LIST_SHRS;
+	}
+	public void setLIST_SHRS(String lIST_SHRS) {
+		LIST_SHRS = lIST_SHRS;
+	}
+	
+	}

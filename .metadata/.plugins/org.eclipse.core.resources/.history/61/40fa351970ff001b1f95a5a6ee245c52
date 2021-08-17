@@ -1,0 +1,121 @@
+package Spring.Webapp;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.List;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import Spring.Webapp.model.stockModel;
+
+@Controller
+public class MyController {
+	@RequestMapping(value = "/index.htm")
+	public ModelAndView indexPage() {
+		Gson gson = new Gson();
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+		Calendar c1 = Calendar.getInstance();
+		String str="";
+		try {
+
+			long start = System.currentTimeMillis();
+			String sendUrl = "http://data.krx.co.kr/comm/bldAttendant/getJsonData.cmd";
+			String jsonValue = "bld=dbms/MDC/STAT/standard/MDCSTAT01501&mktId=ALL&trdDd="+sdf.format(c1.getTime())+"&share=1&money=1&csvxls_isNo=false";
+			str = getUrlData("POST", sendUrl, jsonValue);
+			str = str.replace("\"", "'").substring(14, str.length()-45);
+			List<stockModel> list = gson.fromJson(str, new TypeToken<List<stockModel>>(){}.getType());
+			int cnt = 0;
+			for(stockModel item : list) {
+				cnt += 1;
+				System.out.println(cnt +" - "+item.getISU_SRT_CD());
+				sendUrl = "https://wisefn.finance.daum.net/v1/company/cF3002.aspx?cmp_cd="+item.getISU_SRT_CD()+"&frq=0&rpt=1&finGubun=MAIN";
+ 				String str2 = getUrlData("GET", sendUrl, null);
+				Document doc = Jsoup.parseBodyFragment(str2); 
+				
+				Element cTB31_21 = doc.getElementById("cTB31_21");
+				
+				Element cTB31_30 = doc.getElementById("cTB31_30");
+				Element cTB31_10 = doc.getElementById("cTB31_10");
+
+				Element cTB31_31 = doc.getElementById("cTB31_31");
+				Element cTB31_11 = doc.getElementById("cTB31_11");
+				
+//				if(cTB31_30 == null) continue;
+//				else if( cTB31_31 == null) continue;
+//				else if(cTB31_21 == null) continue;
+//				else if(!cTB31_21.childNode(0).childNode(124).childNode(0).childNode(0).toString().equals("*순자산1")) continue;
+				
+//				cTB31_30 -- 당기 순이익 있는 곳
+//				-2년 -3년 순이익 불러오기
+				double threeYear = Double.parseDouble(cTB31_10.childNode(0).childNode(217).childNode(3).childNode(0).childNode(0).toString().replace(",", ""));
+				double twoYear = Double.parseDouble(cTB31_10.childNode(0).childNode(1).childNode(4).childNode(0).childNode(0).toString().replace(",", ""));
+				
+//			cTB31_31 -- 분기별 최근 당기 순이익 있는 곳
+//			최근 4개 불러오기
+				double lastYear = 0;
+				for(int i = 2; i < 6; i++) {
+					lastYear += Double.parseDouble(cTB31_11.childNode(0).childNode(217).childNode(i).childNode(0).childNode(0).toString().replace(",", ""));
+				}
+				
+//			cTB31_21 -- 분기별 순 자산 있는 곳
+//			가장최근 순자산 불러오기
+			
+//				double worth = Double.parseDouble(cTB31_21.childNode(0).childNode(124).childNode(5).childNode(0).childNode(0).toString().replace(",", ""));
+			}
+			
+			long end = System.currentTimeMillis();
+//		System.out.println("-------------------------------------");
+		System.out.println((end-start)/1000);
+//		System.out.println(elements.get(16));
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+//		model.addAttribute("defultData", outResult.toString());
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("defultData", str);
+		mav.setViewName("/WEB-INF/views/index.jsp");
+		return mav;
+	}
+	
+	private String getUrlData(String requestType, String sendUrl, String jsonValue) throws Exception{
+		StringBuffer outResult = new StringBuffer();
+		String str= "";
+		String inputLine = null;
+		URL url = new URL(sendUrl);;
+		
+		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setDoOutput(true);
+		conn.setRequestMethod(requestType);
+		conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+		conn.setRequestProperty("Accept-Charset", "UTF-8");
+		conn.setRequestProperty("Cookie", "__utma=139639017.1994172332.1628420230.1628420230.1628420230.1; __utmz=139639017.1628420230.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __smVisitorID=GFkcKXRiBWz; JSESSIONID=23WXpVfbFH8KVT4Irvn6H9Lh7FiTWYd3XzbQxnzLvyKSx5VYp1Vsa9Du0GumJk8c.bWRjX2RvbWFpbi9tZGNvd2FwMS1tZGNhcHAxMQ==");
+		conn.setConnectTimeout(10000);
+		conn.setReadTimeout(10000);
+		if(jsonValue != null) {
+			OutputStream os = conn.getOutputStream();
+			os.write(jsonValue.getBytes("UTF-8"));
+			os.flush();			
+		}
+		BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+		while ((inputLine = in.readLine()) != null) {
+			outResult.append(inputLine);
+		}
+		return str = outResult.toString();
+	}
+}
